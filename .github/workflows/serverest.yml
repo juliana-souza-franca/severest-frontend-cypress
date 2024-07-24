@@ -34,7 +34,7 @@ jobs:
       - name: Run Cypress tests
         run: |
           mkdir -p cypress/reports
-          npx cypress run --reporter mochawesome --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true > cypress-run.log 2>&1
+          npx cypress run --reporter mochawesome --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true > cypress-run.log 2>&1 || (cat cypress-run.log && exit 1)
           cat cypress-run.log
 
       - name: Check if JSON reports exist
