@@ -33,11 +33,9 @@ jobs:
 
       - name: Run Cypress tests
         run: |
+          mkdir -p cypress/reports
           npx cypress run > cypress-run.log 2>&1
           cat cypress-run.log
-
-      - name: Create reports directory
-        run: mkdir -p cypress/reports
 
       - name: Check if JSON reports exist
         run: |
