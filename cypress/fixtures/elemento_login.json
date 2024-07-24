@@ -1,0 +1,6 @@
+{
+ "INPUT_LOGIN": "input[id='email']",
+ "PASSWORD_LOGIN":"#password",
+ "BTN_LOGIN":"button[class='btn btn-primary']"
+
+}

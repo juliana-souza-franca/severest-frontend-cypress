@@ -1,0 +1,9 @@
+{
+  "LINK_CADASTRAR": "a[class='btn btn-link']",
+  "INPUT_NAME": "#nome",
+  "INPUT_EMAIL": "#email",
+  "INPUT_PASSWORD": "input[id='password']",
+  "CHECKBOX_ADMINISTRADOR": "#administrador",
+  "BTN_CADASTRAR": "button[class='btn btn-primary btn btn-primary']"
+
+}

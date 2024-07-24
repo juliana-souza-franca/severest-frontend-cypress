@@ -1,0 +1,103 @@
+name: Cypress Web
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test Front run
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install Cypress dependencies
+        run: npm install cypress
+
+      - name: Install faker-js
+        run: npm install @faker-js/faker --save-dev
+
+      - name: Install mochawesome dependencies
+        run: |
+          npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
+
+      - name: Run Cypress tests
+        run: |
+          npx cypress run > cypress-run.log 2>&1
+          cat cypress-run.log
+
+      - name: Merge mochawesome reports
+        run: |
+          npx mochawesome-merge cypress/reports/*.json > cypress/reports/merged-report.json
+          npx marge cypress/reports/merged-report.json -f report -o cypress/reports/html
+
+      - name: Debug List files in mochawesome report after generation
+        run: ls -la cypress/reports/html
+
+      - name: Archive mochawesome Report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-report
+          path: cypress/reports/html
+
+      - name: Debug List files in the workspace after upload
+        run: ls -la
+
+  deploy:
+    name: Deploy GitHub Pages 🌐
+    runs-on: ubuntu-latest
+    needs: test
+    if: always()
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: https://juliana-souza-franca.github.io/severest-fronted-cypress/index.html
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: mochawesome-report
+
+      - name: Debug List downloaded artifacts
+        run: ls -la mochawesome-report
+
+      - name: Archive Artifact
+        run: |
+          tar --dereference --hard-dereference --directory mochawesome-report -cvf $RUNNER_TEMP/artifact.tar --exclude=.git --exclude=.github .
+
+      - name: Debug List Archive Artifact
+        run: ls -la $RUNNER_TEMP
+
+      - name: Upload mochawesome Report to Pages
+        uses: actions/upload-artifact@v3
+        with:
+          name: github-pages
+          path: $RUNNER_TEMP/artifact.tar
+
+      - name: Deploy to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Debug List all files in the workspace
+        run: ls -la
