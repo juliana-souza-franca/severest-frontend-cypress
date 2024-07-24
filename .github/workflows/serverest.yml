@@ -36,6 +36,16 @@ jobs:
           npx cypress run > cypress-run.log 2>&1
           cat cypress-run.log
 
+      - name: Create reports directory
+        run: mkdir -p cypress/reports
+
+      - name: Check if JSON reports exist
+        run: |
+          if [ -z "$(ls -A cypress/reports/*.json 2>/dev/null)" ]; then
+            echo "No JSON reports found"
+            exit 1
+          fi
+
       - name: Merge mochawesome reports
         run: |
           npx mochawesome-merge cypress/reports/*.json > cypress/reports/merged-report.json
