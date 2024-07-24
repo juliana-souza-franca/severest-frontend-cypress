@@ -1,4 +1,5 @@
 const { defineConfig } = require("cypress");
+const { MochaAllureReporter } = require('mocha-allure-reporter');
 
 module.exports = defineConfig({
   e2e: {
@@ -6,7 +7,11 @@ module.exports = defineConfig({
     
 
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      on('after:run', () => {
+        const allure = new MochaAllureReporter();
+        allure.writeResults();
+      
+     
     },
 
 
@@ -18,7 +23,7 @@ module.exports = defineConfig({
   videosFolder: 'cypress/videos',
   defaultCommandTimeout: 10000,
   fixturesFolder: 'cypress/fixtures'
-  },
+)},
 
  
    
