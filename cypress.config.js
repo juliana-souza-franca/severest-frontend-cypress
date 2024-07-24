@@ -15,6 +15,8 @@ module.exports = defineConfig({
   video: true,
   videoCompression: false,
   videosFolder: 'cypress/videos',
-  defaultCommandTimeout: 10000
+  defaultCommandTimeout: 10000,
+  integrationFolder: 'cypress/integration',
+  fixturesFolder: 'cypress/fixtures'
    
 });
