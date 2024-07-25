@@ -52,7 +52,7 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: https://juliana-souza-franca.github.io/severest-frontend-cypress/cypress/results/
+      url: https://juliana-souza-franca.github.io/severest-frontend-cypress/results
     steps:
       - name: Setup Pages
         uses: actions/configure-pages@v5
