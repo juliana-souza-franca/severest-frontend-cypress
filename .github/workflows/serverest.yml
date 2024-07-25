@@ -1,45 +1,44 @@
 name: Cypress Web
- 
+
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
- 
+
 jobs:
   test:
     name: Test Front run
     runs-on: ubuntu-latest
- 
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
- 
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
- 
+
       - name: Install Dependencies
         run: npm install
- 
+
       - name: Run Cypress Tests
         run: npx cypress run --reporter mochawesome --reporter-options reportDir=cypress/results,overwrite=false,html=true,json=true
- 
+
       - name: Merge Mochawesome Reports
         run: npx mochawesome-merge cypress/results/*.json > cypress/results/report.json
- 
+
       - name: Generate Mochawesome Report
         run: npx mochawesome-report-generator cypress/results/report.json -o cypress/results
- 
+
       - name: Archive Mochawesome Report
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: mochawesome-report
           path: cypress/results
- 
 
   deploy:
     name: Deploy GitHub Pages 🌐
@@ -47,7 +46,7 @@ jobs:
     if: always()
     needs: test
     permissions:
-      contents: read
+      contents: write
       pages: write
       id-token: write
     environment:
@@ -56,20 +55,20 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
- 
+
       - name: Setup Pages
         uses: actions/configure-pages@v2
- 
+
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           name: mochawesome-report
- 
+
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: cypress/results
- 
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
