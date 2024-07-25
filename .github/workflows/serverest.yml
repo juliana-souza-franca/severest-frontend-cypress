@@ -51,7 +51,7 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: https://juliana-souza-franca.github.io/severest-frontend-cypress/report.html
+      url: https://juliana-souza-franca.github.io/automation_practice-front_end-cypress/report.html
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
