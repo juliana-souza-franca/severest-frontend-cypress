@@ -40,7 +40,6 @@ jobs:
           name: mochawesome-report
           path: cypress/results
 
-
   deploy:
     name: Deploy GitHub Pages 🌐
     runs-on: ubuntu-latest
@@ -52,7 +51,7 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: https://juliana-souza-franca.github.io/severest-frontend-cypress/results
+      url: https://juliana-souza-franca.github.io/severest-frontend-cypress/report.html
     steps:
       - name: Setup Pages
         uses: actions/configure-pages@v5
