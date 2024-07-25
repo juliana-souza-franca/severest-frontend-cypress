@@ -13,5 +13,6 @@
     "report:run": "npx cypress run",
     "result:run": "npx allure serve allure-results",
     "tests:allure": "npm run report:run && npm run result:run"
+
   }
 }
