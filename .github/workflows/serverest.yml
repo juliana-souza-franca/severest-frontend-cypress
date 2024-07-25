@@ -65,7 +65,7 @@ jobs:
           name: mochawesome-report
 
       - name: Debug - List Files
-        run: ls -R cypress/results
+        run: ls -R 
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v1
